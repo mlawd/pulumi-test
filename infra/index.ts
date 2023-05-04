@@ -9,17 +9,42 @@ const source_bucket = new gcp.storage.Bucket('source-bucket', {
   location,
   uniformBucketLevelAccess: true
 })
+
 const object = new gcp.storage.BucketObject('object', {
   bucket: source_bucket.name,
   source: new pulumi.asset.FileArchive('../functions')
 })
 
-const _function = new gcp.cloudfunctionsv2.Function('function-3', {
+const topic = new gcp.pubsub.Topic('test-topic', {
+  project
+})
+
+const pubFunc = new gcp.cloudfunctionsv2.Function('pub-message', {
   location,
   description: 'a new function',
   buildConfig: {
     runtime: 'nodejs18',
-    entryPoint: 'entryPoint',
+    entryPoint: 'pubMessage',
+    source: {
+      storageSource: {
+        bucket: source_bucket.name,
+        object: object.name
+      }
+    }
+  },
+  serviceConfig: {
+    environmentVariables: {
+      TOPIC_NAME: topic.name
+    }
+  }
+})
+
+const subFunc = new gcp.cloudfunctionsv2.Function('sub-message', {
+  location,
+  description: 'a new function',
+  buildConfig: {
+    runtime: 'nodejs18',
+    entryPoint: 'subMessage',
     environmentVariables: {
       BUILD_CONFIG_TEST: 'build_test'
     },
@@ -29,5 +54,9 @@ const _function = new gcp.cloudfunctionsv2.Function('function-3', {
         object: object.name
       }
     }
+  },
+  eventTrigger: {
+    eventType: 'google.cloud.pubsub.topic.v1.messagePublished',
+    pubsubTopic: topic.id
   }
 })
