@@ -1,0 +1,21 @@
+{
+  "name": "test-email-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/functions/index.js",
+  "scripts": {
+    "do_thing": "zip -r function-source.zip . -i \"package.json\" \"tsconfig.json\" \"functions/*\" \"dist/*\" && cp function-source.zip infra",
+    "build": "tsc && ls -l dist && ls -l dist/functions"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.2.0",
+    "@google-cloud/pubsub": "^3.5.2"
+  }
+}
