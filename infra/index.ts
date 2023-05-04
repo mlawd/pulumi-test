@@ -45,9 +45,6 @@ const subFunc = new gcp.cloudfunctionsv2.Function('sub-message', {
   buildConfig: {
     runtime: 'nodejs18',
     entryPoint: 'subMessage',
-    environmentVariables: {
-      BUILD_CONFIG_TEST: 'build_test'
-    },
     source: {
       storageSource: {
         bucket: source_bucket.name,
