@@ -11,7 +11,7 @@ const source_bucket = new gcp.storage.Bucket('source-bucket', {
 })
 const object = new gcp.storage.BucketObject('object', {
   bucket: source_bucket.name,
-  source: new pulumi.asset.FileAsset('function-source.zip')
+  source: new pulumi.asset.FileArchive('../functions')
 })
 
 const _function = new gcp.cloudfunctionsv2.Function('function-3', {

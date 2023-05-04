@@ -4,9 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "do_thing": "zip -r function-source.zip . -i \"package.json\" \"tsconfig.json\" \"functions/*\" && cp function-source.zip infra",
-    "build": "tsc",
-    "deploy": "(cd infra && pulumi up -y)"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
